@@ -2,13 +2,13 @@
   "db": {
     "port": 27017,
     "host": "localhost",
-    "username": "foo",
-    "password": "bar"
+    "username": "",
+    "password": ""
   },
   "server": {
     "port": 3500,
     "address": "0.0.0.0"
   },
-  "flavor": "normal",
+  "flavor": "mongodb",
   "debug": true
 }
