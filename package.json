@@ -5,7 +5,8 @@
   "author": "Ricard Aspeljung <ricard@opendia.se>",
   "main": "server.js",
   "directories": {
-    "lib": "./lib"
+    "lib": "lib",
+    "test": "test"
   },
   "keywords": [
     "mongodb",
@@ -23,8 +24,8 @@
     "url": "https://github.com/Cordazar/crest/issues"
   },
   "dependencies": {
-    "mongodb": "1.2.x",
-    "restify": "2.3.x"
+    "mongodb": "^2.2.30",
+    "restify": "^4.1.1"
   },
   "devDependencies": {
     "supertest": "0.5.x",
@@ -35,10 +36,12 @@
     "node": ">=0.8.0"
   },
   "scripts": {
-    "test": "mocha -R spec"
+    "test": "mocha -R spec",
+    "start": "node server.js"
   },
   "preferGlobal": true,
   "bin": {
     "server": "./bin/server"
-  }
+  },
+  "homepage": "https://github.com/cordazar/crest#readme"
 }
