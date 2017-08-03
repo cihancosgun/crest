@@ -21,7 +21,6 @@ debug("rest.js is loaded");
  */
 function handleGet(req, res, next) {
   debug("GET-request recieved");
-//  debug(JSON.stringify(req.params.count));
   var query;
   // Providing an id overwrites giving a query in the URL
   if (req.params.id) {
@@ -54,35 +53,25 @@ function handleGet(req, res, next) {
 
   MongoClient.connect(util.connectionURL(req.params.db, config), function (err, db) {
     db.collection(req.params.collection, function (err, collection) {
-      if(req.params.count=="1"){
-		  collection.find(query, options, function (err, cursor) {
-			cursor.toArray(function (err, docs) {
-			  var result = {"count":docs.length};		
-			  res.json(result, {'content-type': 'application/json; charset=utf-8'});
-			  db.close();
-			});
+      collection.find(query, options, function (err, cursor) {
+        cursor.toArray(function (err, docs) {
+          var result = [];
+          if (req.params.id) {
+            if (docs.length > 0) {
+              result = util.flavorize(docs[0], "out");
+              res.json(result, {'content-type': 'application/json; charset=utf-8'});
+            } else {
+              res.json(404);
+            }
+          } else {
+            docs.forEach(function (doc) {
+              result.push(util.flavorize(doc, "out"));
+            });
+            res.json(result, {'content-type': 'application/json; charset=utf-8'});
+          }
+          db.close();
+        });
       });
-      }else{
-      	collection.find(query, options, function (err, cursor) {
-			cursor.toArray(function (err, docs) {
-			  var result = [];
-			  if (req.params.id) {
-				if (docs.length > 0) {
-				  result = util.flavorize(docs[0], "out");
-				  res.json(result, {'content-type': 'application/json; charset=utf-8'});
-				} else {
-				  res.json(404);
-				}
-			  } else {
-				docs.forEach(function (doc) {
-				  result.push(util.flavorize(doc, "out"));
-				});
-				res.json(result, {'content-type': 'application/json; charset=utf-8'});
-			  }
-			  db.close();
-			});
-		  });
-      }
     });
   });
 }
